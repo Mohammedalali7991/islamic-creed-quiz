@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أسئلة في العقيدة الإسلامية</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --success-color: #2ec4b6;
+            --danger-color: #e71d36;
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        /* عنوان التطبيق الرئيسي في الأعلى */
+        .app-title {
+            text-align: center;
+            color: #4a6fa5;
+            margin-bottom: 20px;
+            font-size: 1.6rem;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .quiz-container {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            padding: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: white;
+            border-radius: 15px;
+            padding: 25px 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 15px rgba(108, 92, 231, 0.3);
+            position: relative;
+        }
+
+        .question-box::before {
+            content: "❓";
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: #fdcb6e;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .options-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option-btn {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-align: right;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            width: 100%;
+            color: var(--text-color);
+        }
+
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        .option-btn.correct {
+            background-color: #d4edda !important;
+            border-color: var(--success-color) !important;
+            color: #155724 !important;
+        }
+
+        .option-btn.wrong {
+            background-color: #f8d7da !important;
+            border-color: var(--danger-color) !important;
+            color: #721c24 !important;
+        }
+
+        .option-btn:disabled {
+            pointer-events: none;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            width: 85%;
+            max-width: 400px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .modal-overlay.show .modal-box {
+            transform: translateY(0);
+        }
+
+        .modal-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .modal-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 4px 10px rgba(74, 111, 165, 0.3);
+        }
+
+        .progress-bar {
+            margin-top: 20px;
+            font-size: 0.85rem;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-title">أسئلة في العقيدة الإسلامية</div>
+
+    <div class="quiz-container">
+        <div class="question-box" id="question-text">جاري تحميل السؤال...</div>
+        
+        <div class="options-list">
+            <button class="option-btn" onclick="checkAnswer(0)"></button>
+            <button class="option-btn" onclick="checkAnswer(1)"></button>
+            <button class="option-btn" onclick="checkAnswer(2)"></button>
+        </div>
+
+        <div class="progress-bar" id="progress-text">جاري الحساب...</div>
+    </div>
+
+    <div class="modal-overlay" id="modal">
+        <div class="modal-box">
+            <div class="modal-icon" id="modal-icon">🎉</div>
+            <div class="modal-text" id="modal-message">أحسنتم!</div>
+            <button class="modal-btn" onclick="nextQuestion()">المتابعة</button>
+        </div>
+    </div>
+
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            alert("هناك خطأ برميجي في السطر: " + lineno + "\nالرسالة: " + message);
+            return true;
+        };
+
+        let mainQuestions = [
+            { q: "ما هي عاصمة العراق؟", options: ["بغداد", "الموصل", "البصرة"] },
+            { q: "كم عدد كواكب المجموعة الشمسية؟", options: ["8 كواكب", "9 كواكب", "7 كواكب"] },
+            { q: "ما هو أسرع كائن حي على الأرض؟", options: ["الفهد", "النعامة", "الأسد"] },
+            { q: "ما هو اللقب الشهير لمدينة الموصل؟", options: ["الحدباء", "الفيحاء", "الشهباء"] },
+            { q: "ما هو أكبر المحيطات في العالم؟", options: ["المحيط الهادئ", "المحيط الأطلسي", "المحيط الهندي"] },
+            { q: "الشفاعة يوم القيامة تكون:", options: ["بإذن الله", "لكل أحد", "بدون إذن"] },
+            { q: "من ينكر البعث:", options: ["كافر", "مؤمن", "عاصي فقط"] },
+            { q: "القبر فيه:", options: ["نعيم أو عذاب", "لا شيء", "نوم فقط"] },
+            { q: "أول من يدخل الجنة:", options: ["محمد ﷺ", "الفقراء", "الأنبياء"] },
+            { q: "أول من يدخل النار:", options: ["الكفار", "المؤمنون", "الملائكة"] },
+            { q: "الله تعالى:", options: ["ليس كمثله شيء", "يشبه خلقه", "مثل الإنسان"] },
+            { q: "من صفات الله:", options: ["الكمال", "النوم", "التعب"] },
+            { q: "الرزق بيد:", options: ["الله", "الإنسان", "التجارة فقط"] },
+            { q: "الدعاء يكون:", options: ["لله وحده", "للأموات فقط", "للملائكة"] },
+            { q: "الاستغاثة تكون:", options: ["بالله وحده فيما لا يقدر عليه إلا هو", "بالأموات", "بالأصنام"] },
+            { q: "من أصول الدين:", options: ["التوحيد", "الطب", "التجارة"] },
+            { q: "من أركان الإيمان:", options: ["الإيمان بالرسل", "الصدق", "العمل فقط"] },
+            { q: "الرسل:", options: ["معصومون في التبليغ", "كذبوا", "يخطئون في الدين"] },
+            { q: "أول الرسل:", options: ["نوح", "آدم", "إبراهيم"] },
+            { q: "أول أمة:", options: ["أمة نوح", "أمة محمد", "أمة موسى"] },
+            { q: "القرآن محفوظ:", options: ["من الله", "من البشر", "من الصحابة فقط"] },
+            { q: "السنة النبوية:", options: ["وحي من الله", "كلام بشر", "رأي الصحابة"] },
+            { q: "من أركان الإسلام:", options: ["الحج", "الإيمان بالكتب", "الإيمان بالملائكة"] },
+            { q: "الزكاة تطهر:", options: ["المال", "البدن", "القلب فقط"] },
+            { q: "الصلاة:", options: ["عمود الدين", "تسقط عن المسلم", "مستحبة فقط"] },
+            { q: "الإيمان بالكتب يعني:", options: ["جميع الكتب المنزلة", "القرآن فقط", "التوراة فقط"] },
+            { q: "القرآن:", options: ["يُتعبد بتلاوته", "لا يُتعبد به", "كتاب تاريخ"] },
+            { q: "الله:", options: ["غني عن العالمين", "يحتاج إلى خلقه", "فقير"] },
+            { q: "العبادة:", options: ["لله وحده", "للأولياء", "للأصنام"] },
+            { q: "الشرك الأصغر:", options: ["لا يخرج لكنه خطير", "يخرج من الإسلام", "لا شيء"] },
+            { q: "الاستعانة:", options: ["بالخلق فيما يقدرون عليه", "بالله وحده في الغيب", "بالأموات"] },
+            { q: "الإيمان بالقدر:", options: ["ركن من أركان الإيمان", "مستحب", "غير مهم"] },
+            { q: "الله:", options: ["يعلم كل شيء", "لا يعلم المستقبل", "يعلم الماضي فقط"] },
+            { q: "الملائكة:", options: ["لا يوصفون بالذكورة والأنوثة", "إناث", "ذكور وإناث"] },
+            { q: "الجن:", options: ["مكلفون", "يرون الله في الدنيا", "غير مكلفين"] },
+            { q: "من أسماء الله:", options: ["الرحمن", "الإنسان", "الملك"] },
+            { q: "الإيمان:", options: ["قول وعمل واعتقاد", "قول فقط", "عمل فقط"] },
+            { q: "الكفر:", options: ["أنواع متعددة", "نوع واحد", "لا يوجد"] },
+            { q: "النفاق:", options: ["كفر باطن", "إيمان", "طاعة"] },
+            { q: "القرآن:", options: ["لا يُزاد ولا يُنقص", "يُزاد فيه", "يُنقص منه"] },
+            { q: "أعظم حق:", options: ["حق الله", "حق الوالدين", "حق النفس"] },
+            { q: "الأنبياء:", options: ["صادقون", "يكذبون", "يعبدون غير الله"] },
+            { q: "الرسالة:", options: ["اختيار إلهي", "اختيار بشري", "وراثة"] },
+            { q: "الإيمان باليوم الآخر:", options: ["أصل من أصول الإيمان", "لا فائدة منه", "مستحب"] },
+            { q: "الجنة:", options: ["للمؤمنين", "للكفار", "للجميع"] },
+            { q: "النار:", options: ["عذاب", "نعيم", "راحة"] },
+            { q: "أول ما يُسأل عنه العبد:", options: ["الصلاة", "الصيام", "الحج"] },
+            { q: "من أعظم الذنوب:", options: ["كلاهما", "ترك الصلاة", "الكفر"] },
+            { q: "الله:", options: ["غني عن المكان", "يحتاج إلى مكان", "داخل الخلق"] },
+            { q: "الملائكة:", options: ["خالدون بإذن الله", "لا يموتون", "يموتون"] },
+            { q: "القرآن:", options: ["محفوظ", "يُنسخ", "يُغير"] },
+            { q: "الرسول ﷺ:", options: ["أفضل البشر", "بشر عادي", "ملك"] },
+            { q: "اتباع السنة:", options: ["واجب", "مستحب فقط", "غير لازم"] },
+            { q: "التوحيد:", options: ["عبادة الله وحده", "ثلاثة أقسام فقط اصطلاحية", "ترك العبادة"] },
+            { q: "الشرك:", options: ["يبعد عن الله", "يقرب إلى الله", "لا أثر له"] },
+            { q: "الدعاء:", options: ["عبادة", "عادة", "لعب"] },
+            { q: "الاستعانة:", options: ["نوع من العبادة", "عبادة", "عادة"] },
+            { q: "الرسول ﷺ:", options: ["يُطاع فيما أمر", "لا يُطاع", "يُهجر"] },
+            { q: "الإيمان بالرسل:", options: ["بكلهم", "ببعضهم", "بواحد فقط"] },
+            { q: "من يكفر برسول واحد:", options: ["كافر", "مؤمن", "مسلم"] },
+            { q: "الكتب السماوية:", options: ["من عند الله", "مختلفة في الأصل", "من البشر"] },
+            { q: "الإيمان يزيد:", options: ["بالطاعة", "بالمعصية", "لا يزيد"] },
+            { q: "الإيمان ينقص:", options: ["بالمعصية", "بالطاعة", "لا ينقص"] },
+            { q: "أعظم نعيم:", options: ["الجنة", "المال", "الدنيا"] },
+            { q: "غاية الخلق:", options: ["عبادة الله", "العبث", "الأكل والشرب"] }
+        ];
+
+        let reviewQueue = [];
+        let currentQuestionIndex = 0;
+        let correctAnswerText = "";
+        let globalQuestionCounter = 0;
+
+        const correctPhrases = [
+            { text: "أحسنت يا بطل! إجابة ذكية.", icon: "⭐" },
+            { text: "بارك الله فيك! ممتاز جداً.", icon: "🎉" },
+            { text: "رائع! استمر في هذا التألق.", icon: "🚀" },
+            { text: "إجابة صحيحة مئة بالمئة! مذهل.", icon: "🧠" }
+        ];
+
+        const wrongPhrases = [
+            { text: "ركز جيداً في المرة القادمة، أنت قادر عليها!", icon: "🧐" },
+            { text: "لا بأس، المحاولة خطوة نحو التعلم. حاول مجدداً!", icon: "💡" },
+            { text: "أنت قريب! ركز قليلاً وسوف تصيبها.", icon: "💪" },
+            { text: "خطأ بسيط، لا تقلق سنعيد هذا السؤال لاحقاً لتتقنه.", icon: "🔁" }
+        ];
+
+        function loadQuestion() {
+            try {
+                const buttons = document.querySelectorAll('.option-btn');
+                buttons.forEach(btn => {
+                    btn.className = "option-btn";
+                    btn.disabled = false;
+                });
+
+                let currentQuestion;
+
+                if (reviewQueue.length > 0 && reviewQueue[0].targetCount === globalQuestionCounter) {
+                    currentQuestion = reviewQueue.shift().questionData;
+                } else if (currentQuestionIndex < mainQuestions.length) {
+                    currentQuestion = mainQuestions[currentQuestionIndex];
+                    currentQuestionIndex++;
+                } else if (reviewQueue.length > 0) {
+                    currentQuestion = reviewQueue.shift().questionData;
+                } else {
+                    document.getElementById('question-text').innerText = "🎉 تهانينا! لقد أتممت جميع الأسئلة بنجاح.";
+                    document.getElementById('question-text').style.background = "linear-gradient(135deg, #2ec4b6, #011627)";
+                    buttons.forEach(btn => btn.style.display = 'none');
+                    document.getElementById('progress-text').innerText = "اكتمل الاختبار بنجاح.";
+                    return;
+                }
+
+                document.getElementById('question-text').innerText = currentQuestion.q;
+                correctAnswerText = currentQuestion.options[0];
+
+                let shuffledOptions = [...currentQuestion.options].sort(() => Math.random() - 0.5);
+
+                buttons.forEach((btn, index) => {
+                    btn.innerText = shuffledOptions[index];
+                });
+
+                let totalRemaining = (mainQuestions.length - currentQuestionIndex) + reviewQueue.length + 1;
+                document.getElementById('progress-text').innerText = `الأسئلة المتبقية: ${totalRemaining}`;
+            } catch (e) {
+                alert("خطأ أثناء تحميل السؤال: " + e.message);
+            }
+        }
+
+        function checkAnswer(buttonIndex) {
+            const buttons = document.querySelectorAll('.option-btn');
+            const selectedButton = buttons[buttonIndex];
+            globalQuestionCounter++;
+
+            let isCorrect = (selectedButton.innerText === correctAnswerText);
+
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn.innerText === correctAnswerText) {
+                    btn.classList.add('correct');
+                }
+            });
+
+            if (!isCorrect) {
+                selectedButton.classList.add('wrong');
+                
+                let currentQuestionData = {
+                    q: document.getElementById('question-text').innerText,
+                    options: [correctAnswerText, ...Array.from(buttons).map(b => b.innerText).filter(t => t !== correctAnswerText)]
+                };
+                
+                reviewQueue.push({
+                    questionData: currentQuestionData,
+                    targetCount: globalQuestionCounter + 4
+                });
+            }
+
+            setTimeout(() => {
+                showModal(isCorrect);
+            }, 600);
+        }
+
+        function showModal(isCorrect) {
+            const modal = document.getElementById('modal');
+            const modalIcon = document.getElementById('modal-icon');
+            const modalMessage = document.getElementById('modal-message');
+
+            if (isCorrect) {
+                let randomPhrase = correctPhrases[Math.floor(Math.random() * correctPhrases.length)];
+                modalIcon.innerText = randomPhrase.icon;
+                modalMessage.innerText = randomPhrase.text;
+                modalMessage.style.color = "#155724";
+            } else {
+                let randomPhrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
+                modalIcon.innerText = randomPhrase.icon;
+                modalMessage.innerText = randomPhrase.text;
+                modalMessage.style.color = "#721c24";
+            }
+
+            modal.classList.add('show');
+        }
+
+        function nextQuestion() {
+            document.getElementById('modal').classList.remove('show');
+            loadQuestion();
+        }
+
+        window.onload = loadQuestion;
+    </script>
+</body>
+</html>
