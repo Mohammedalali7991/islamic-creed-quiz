@@ -88,7 +88,6 @@
             transform: scale(0.98);
         }
 
-        /* الألوان الديناميكية عند الإجابة */
         .option-btn.correct {
             background-color: rgba(46, 204, 113, 0.15) !important;
             border-color: var(--correct-color) !important;
@@ -111,7 +110,6 @@
             text-transform: uppercase;
         }
 
-        /* تصميم النافذة المنبثقة الفخمة (Popup Modal) */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -209,7 +207,6 @@
         <div id="progress">الأسئلة المتبقية: -- من أصل --</div>
     </div>
 
-    <!-- النافذة المنبثقة التفاعلية للردود والتشجيع -->
     <div id="feedback-modal" class="modal-overlay">
         <div class="modal-content">
             <div id="modal-title" class="modal-title"></div>
@@ -219,13 +216,12 @@
     </div>
 
     <script>
-        // مصفوفة الـ 100 سؤال كاملة ومصلحة 100% بدون أي نقص أو أخطاء
         const quizData = [
             { question: "ما هو أصل الأصول ولب دعوة المرسلين؟", options: ["توحيد الله العبادة", "الإيمان بالملائكة", "معرفة السيرة النبوية"], answer: 0 },
             { question: "منكر القدر يعتبر في العقيدة الإسلامية لغة وشرعاً:", options: ["كافر", "مؤمن", "مسلم"], answer: 0 },
             { question: "ما معنى الإيمان بالملائكة؟", options: ["التصديق الجازم بوجودهم وأنهم عباد مكرمون", "رؤيتهم بالعين المجردة", "عبادتهم من دون الله"], answer: 0 },
             { question: "المراد بالتوحيد في الإسلام هو:", options: ["إفراد الله بالربوبية والألوهية والأسماء والصفات", "الإيمان بوجود الله فقط", "القيام بالعبادات الظاهرة فقط"], answer: 0 },
-            { question: "ما حكم الإيمان بالكتب السماوية？", options: ["واجب وهو ركن من أركان الإيمان", "مستحب", "جائز"], answer: 0 },
+            { question: "ما حكم الإيمان بالكتب السماوية؟", options: ["واجب وهو ركن من أركان الإيمان", "مستحب", "جائز"], answer: 0 },
             { question: "أول الرسل هو نوح عليه السلام وآخرهم هو:", options: ["محمد صلى الله عليه وسلم", "عيسى عليه السلام", "موسى عليه السلام"], answer: 0 },
             { question: "ما معنى الإيمان باليوم الآخر؟", options: ["التصديق بكل ما أخبر به النبي مما يكون بعد الموت", "الخوف من الموت فقط", "معرفة علامات الساعة فقط"], answer: 0 },
             { question: "توحيد الربوبية يعني:", options: ["إفراد الله بأفعاله كالخلق والرزق والتدبير", "صرف العبادة لله وحده", "إثبات الأسماء والصفات لله"], answer: 0 },
@@ -302,7 +298,7 @@
             { question: "أفضل الأمة بعد نبيها صلى الله عليه وسلم بالترتيب في الخلافة والفضل الفقهي:", options: ["أبو بكر، ثم عمر، ثم عثمان، ثم علي", "علي، ثم أبو بكر، ثم عمر، ثم عثمان", "أبو بكر، ثم علي، ثم عمر، ثم عثمان"], answer: 0 },
             { question: "عقد الولاء والبراء في الإسلام يكون على أساس:", options: ["الدين والعقيدة والمحبة في الله والبغض فيه", "القبيلة والنسب والأرض", "المصالح المالية والسياسية المعاصرة"], answer: 0 },
             { question: "حب آل بيت النبي صلى الله عليه وسلم وتوليهم الأبرار الأتقياء هو:", options: ["واجب شرعي من أصول عقيدة أهل السنة دون غلو أو جفاء", "مستحب وخاص بأهل المذاهب المعينة", "غير لازم في العصر الحالي"], answer: 0 },
-            { question: "الواجب عند رؤية منكر من المعاصي والبدع تغييره بـ:", options: ["اليد، فإن لم يستطع فباللسان, فإن لم يستطع فبالقلب", "السكوت التام مطلقاً من باب الحكمة", "القتال الفوري دون مراعاة المفاسد"], answer: 0 },
+            { question: "الواجب عند رؤية منكر من المعاصي والبدع تغييره بـ:", options: ["اليد، فإن لم يستطع فباللسان، فإن لم يستطع فبالقلب", "السكوت التام مطلقاً من باب الحكمة", "القتال الفوري دون مراعاة المفاسد"], answer: 0 },
             { question: "أخوف ما خاف النبي صلى الله عليه وسلم على أمته الشرك الأصغر وفسره بـ:", options: ["الرياء", "السرقة", "الكذب"], answer: 0 },
             { question: "القول بأن الإنسان مجبر على أفعاله تماماً ولا مشيئة له بالكلية هو قول طائفة:", options: ["الجبرية", "القدرية", "المعتزلة"], answer: 0 },
             { question: "القول بأن العبد يخلق فعل نفسه وأن الله لم يقدر المعاصي هو قول طائفة:", options: ["القدرية", "الجبرية", "الأشاعرة"], answer: 0 },
@@ -323,7 +319,6 @@
             { question: "الشهادة التي تعصم دم الإنسان وماله في الدنيا هي قول:", options: ["أشهد أن لا إله إلا الله وأشهد أن محمداً رسول الله", "أشهد أن الجنة حق والنار حق", "أستغفر الله العظيم وأتوب إليه"], answer: 0 }
         ];
 
-        // مصفوفات العبارات التشجيعية والتنبيهية المطلوبة
         const correctPhrases = [
             "أحسنت، بارك الله فيك وعليك!", "مبدع ومتألق دائماً!", "إجابة سديدة، وفقك الله!", 
             "ممتاز، زادك الله علماً وفهماً!", "أصبت الهدف بجدارة!", "رائع، ذكاء حاد وفهم ثاقب!", 
@@ -333,7 +328,7 @@
 
         const wrongPhrases = [
             "ركز في المرة القادمة، فالقادم أفضل!", "للأسف، إجابة غير دقيقة.. حاول مجدداً!", "بسيطة، تعوضها في السؤال التالي بإذن الله!", 
-            "تأمل في السؤال جيداً قبل الاختيار!", "لم يحالفك الحظ هذه المرة، ركز أكثر!", "خطأ بسيط، استعن بالله وتابع!", 
+            "تأمل في السؤال جيداً قبل الاختيار!", "لم يحالفك الحظ هذه المرة, ركز أكثر!", "خطأ بسيط، استعن بالله وتابع!", 
             "لا بأس، من الخطأ نتعلم الصواب!", "فكر ملياً، أنت قادر على حلها!", "انتبه للتفاصيل في الأسئلة القادمة!", 
             "معليش، خذ نفساً عميقاً وركز في القادم!"
         ];
@@ -342,14 +337,11 @@
         let score = 0;
         let audioCtx = null;
 
-        // دالة توليد المؤثرات الصوتية برمجياً عبر الجافاسكريبت لتعمل على كل الهواتف بثبات
         function playSound(isCorrect) {
             try {
                 if (!audioCtx) {
                     audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 }
-                
-                // التأكد من تفعيل وضع الصوت إذا قيده الهاتف
                 if (audioCtx.state === 'suspended') {
                     audioCtx.resume();
                 }
@@ -360,30 +352,38 @@
                 gain.connect(audioCtx.destination);
 
                 if (isCorrect) {
-                    // نغمة مبهجة (صوت الإجابة الصحيحة)
                     osc.type = 'sine';
-                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // نغمة C5
-                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // نغمة E5
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
                     gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.3);
                 } else {
-                    // نغمة تنبيهية منخفضة (صوت الإجابة الخاطئة)
                     osc.type = 'sawtooth';
-                    osc.frequency.setValueAtTime(220.00, audioCtx.currentTime); // نغمة A3
-                    osc.frequency.setValueAtTime(146.83, audioCtx.currentTime + 0.15); // نغمة D3
+                    osc.frequency.setValueAtTime(220.00, audioCtx.currentTime); 
+                    osc.frequency.setValueAtTime(146.83, audioCtx.currentTime + 0.15); 
                     gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.4);
                 }
             } catch (e) {
-                console.log("Audio not supported or blocked by device config: ", e);
+                console.log("Audio logic blocked or un-supported: ", e);
             }
         }
 
         function initQuiz() {
+            const savedIndex = localStorage.getItem('aqeedah_quiz_index');
+            const savedScore = localStorage.getItem('aqeedah_quiz_score');
+
+            if (savedIndex !== null) {
+                currentQuestionIndex = parseInt(savedIndex, 10);
+            }
+            if (savedScore !== null) {
+                score = parseInt(savedScore, 10);
+            }
+
             loadQuestion();
         }
 
@@ -424,12 +424,10 @@
             const currentQuiz = quizData[currentQuestionIndex];
             const buttons = document.querySelectorAll('.option-btn');
             
-            // قفل جميع الأزرار لمنع التلاعب والضغط المكرر
             buttons.forEach(btn => btn.disabled = true);
 
             let isCorrect = (selectedIndex === currentQuiz.answer);
 
-            // تلوين الإجابات بذكاء حسب الصحة والخطأ
             if (isCorrect) {
                 clickedButton.classList.add('correct');
                 score++;
@@ -437,14 +435,12 @@
                 showFeedbackPopup(true);
             } else {
                 clickedButton.classList.add('wrong');
-                // إضاءة الإجابة الصحيحة باللون الأخضر فوراً
                 buttons[currentQuiz.answer].classList.add('correct');
                 playSound(false);
                 showFeedbackPopup(false);
             }
         }
 
-        // عرض النافذة المنبثقة الأنيقة بالعبارة العشوائية المناسبة
         function showFeedbackPopup(isCorrect) {
             const modal = document.getElementById('feedback-modal');
             const title = document.getElementById('modal-title');
@@ -465,12 +461,16 @@
             modal.classList.add('active');
         }
 
+        // التعديل الجوهري: يتم تخزين التقدم الفعلي هنا فقط لضمان سلامة البيانات من أي تنشيط مفاجئ للشاشة
         function closeModalAndContinue() {
             const modal = document.getElementById('feedback-modal');
             modal.classList.remove('active');
             
-            // الانتقال للسؤال التالي بعد إغلاق النافذة
             currentQuestionIndex++;
+            
+            localStorage.setItem('aqeedah_quiz_index', currentQuestionIndex);
+            localStorage.setItem('aqeedah_quiz_score', score);
+            
             loadQuestion();
         }
 
@@ -488,7 +488,23 @@
         }
 
         function restartQuizFromScratch() {
-            window.location.reload(); // إعادة تدوير الصفحة لضمان تنظيف متكامل وعودة الذاكرة لنقطة الصفر
+            localStorage.removeItem('aqeedah_quiz_index');
+            localStorage.removeItem('aqeedah_quiz_score');
+            currentQuestionIndex = 0;
+            score = 0;
+            
+            const quizBox = document.getElementById('quiz-box');
+            if (quizBox) {
+                quizBox.innerHTML = `
+                    <h1>أسئلة في العقيدة الإسلامية</h1>
+                    <div id="question-container">
+                        <span id="question">جاري تحميل السؤال...</span>
+                    </div>
+                    <div id="options-container"></div>
+                    <div id="progress">الأسئلة المتبقية: -- من أصل --</div>
+                `;
+            }
+            loadQuestion();
         }
 
         document.addEventListener('DOMContentLoaded', initQuiz);
