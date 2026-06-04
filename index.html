@@ -3,13 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aqeedah Quiz - اختبار العقيدة</title>
+    <title>Aqeedah Quiz - اختبار العقيدة الفخم</title>
     <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #d4af37; /* ذهبي فخم */
+            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            --correct-color: #2ecc71;
+            --wrong-color: #e74c3c;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
+            background: var(--bg-gradient);
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -19,29 +27,36 @@
 
         #quiz-box {
             background-color: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 15px 35px rgba(44, 62, 80, 0.08);
+            padding: 35px 25px;
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
             text-align: center;
+            border-top: 6px solid var(--accent-color);
+            position: relative;
         }
 
         h1 {
-            color: #2c3e50;
-            font-size: 24px;
+            color: var(--primary-color);
+            font-size: 22px;
+            margin-top: 0;
             margin-bottom: 25px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
 
         #question-container {
-            background-color: #7f8fa6;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            padding: 22px;
+            border-radius: 18px;
             font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 25px;
-            min-height: 60px;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.15);
+            min-height: 50px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,45 +65,133 @@
         #options-container {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 14px;
         }
 
         .option-btn {
             background-color: #ffffff;
-            color: #2c3e50;
-            border: 2px solid #f0f3f2;
-            padding: 15px;
-            border-radius: 12px;
-            font-size: 16px;
+            color: #34495e;
+            border: 2px solid #eef2f5;
+            padding: 16px 20px;
+            border-radius: 14px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s ease;
             text-align: right;
-            font-weight: 500;
+            font-weight: 600;
             width: 100%;
             box-sizing: border-box;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
         }
 
-        .option-btn:hover {
-            background-color: #f1f2f6;
-            border-color: #7f8fa6;
+        .option-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* الألوان الديناميكية عند الإجابة */
+        .option-btn.correct {
+            background-color: rgba(46, 204, 113, 0.15) !important;
+            border-color: var(--correct-color) !important;
+            color: #1e7e34 !important;
+            font-weight: 700;
+        }
+
+        .option-btn.wrong {
+            background-color: rgba(231, 76, 60, 0.15) !important;
+            border-color: var(--wrong-color) !important;
+            color: #bd2130 !important;
+            font-weight: 700;
         }
 
         #progress {
-            margin-top: 25px;
-            color: #7f8c8d;
-            font-size: 14px;
+            margin-top: 30px;
+            color: #95a5a6;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* تصميم النافذة المنبثقة الفخمة (Popup Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background: #ffffff;
+            padding: 30px 25px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            transform: translateY(-30px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .modal-title.success { color: var(--correct-color); }
+        .modal-title.fail { color: var(--wrong-color); }
+
+        .modal-text {
+            font-size: 16px;
+            color: #5a6c7d;
+            margin-bottom: 25px;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .modal-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 35px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);
+            width: 100%;
         }
 
         .restart-btn {
-            background-color: #2ecc71;
-            color: white;
+            background-color: var(--accent-color);
+            color: var(--primary-color);
             border: none;
-            padding: 12px 25px;
-            border-radius: 10px;
+            padding: 14px 30px;
+            border-radius: 12px;
             font-size: 16px;
             cursor: pointer;
-            margin-top: 20px;
-            font-weight: bold;
+            margin-top: 25px;
+            font-weight: 700;
+            width: 100%;
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
         }
     </style>
 </head>
@@ -106,14 +209,23 @@
         <div id="progress">الأسئلة المتبقية: -- من أصل --</div>
     </div>
 
+    <!-- النافذة المنبثقة التفاعلية للردود والتشجيع -->
+    <div id="feedback-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div id="modal-title" class="modal-title"></div>
+            <div id="modal-text" class="modal-text"></div>
+            <button id="modal-next-btn" class="modal-btn" onclick="closeModalAndContinue()">التالي</button>
+        </div>
+    </div>
+
     <script>
-        // مصفوفة الـ 100 سؤال كاملة ومصلحة 100% بدون أي خطأ برمي
+        // مصفوفة الـ 100 سؤال كاملة ومصلحة 100% بدون أي نقص أو أخطاء
         const quizData = [
             { question: "ما هو أصل الأصول ولب دعوة المرسلين؟", options: ["توحيد الله العبادة", "الإيمان بالملائكة", "معرفة السيرة النبوية"], answer: 0 },
             { question: "منكر القدر يعتبر في العقيدة الإسلامية لغة وشرعاً:", options: ["كافر", "مؤمن", "مسلم"], answer: 0 },
             { question: "ما معنى الإيمان بالملائكة؟", options: ["التصديق الجازم بوجودهم وأنهم عباد مكرمون", "رؤيتهم بالعين المجردة", "عبادتهم من دون الله"], answer: 0 },
             { question: "المراد بالتوحيد في الإسلام هو:", options: ["إفراد الله بالربوبية والألوهية والأسماء والصفات", "الإيمان بوجود الله فقط", "القيام بالعبادات الظاهرة فقط"], answer: 0 },
-            { question: "ما حكم الإيمان بالكتب السماوية؟", options: ["واجب وهو ركن من أركان الإيمان", "مستحب", "جائز"], answer: 0 },
+            { question: "ما حكم الإيمان بالكتب السماوية？", options: ["واجب وهو ركن من أركان الإيمان", "مستحب", "جائز"], answer: 0 },
             { question: "أول الرسل هو نوح عليه السلام وآخرهم هو:", options: ["محمد صلى الله عليه وسلم", "عيسى عليه السلام", "موسى عليه السلام"], answer: 0 },
             { question: "ما معنى الإيمان باليوم الآخر؟", options: ["التصديق بكل ما أخبر به النبي مما يكون بعد الموت", "الخوف من الموت فقط", "معرفة علامات الساعة فقط"], answer: 0 },
             { question: "توحيد الربوبية يعني:", options: ["إفراد الله بأفعاله كالخلق والرزق والتدبير", "صرف العبادة لله وحده", "إثبات الأسماء والصفات لله"], answer: 0 },
@@ -147,9 +259,9 @@
             { question: "الحوض المورود لنبينا صلى الله عليه وسلم ماؤه أشد بياضاً من:", options: ["اللبن وأحلى من العسل ومن شرب منه لا يظمأ أبداً", "الماء الصافي وأبرد من الثلج", "المطر وله رائحة المسك"], answer: 0 },
             { question: "الجنة والنار مخلوقتان الآن و:", options: ["لا تفنيان أبداً ولا تبيدان", "تفنيان بعد دخول أهل الجنة الجنة", "تخلقان يوم القيامة فقط"], answer: 0 },
             { question: "الذنب الذي لا يغفره الله لمن مات عليه هو:", options: ["الشرك بالله", "القتل العمد", "الزنا الكبائر"], answer: 0 },
-            { question: "المراد بـ 'العقيدة الإسلامية' هي الأمور التي يجب أن:", options: ["يصدق بها القلب وتطمئن إليها النفس وتكون يقيناً لا شك فيه", "تدرس في المدارس فقط", "تطبق بالبدن دون القلب"], answer: 0 },
+            { question: "المراد بـ 'العقيدة الإسلامية' هي الأمور التي يجب أن:", options: ["يصدق بها القلب وتطمئن إليها النفس وتكون يقيناً لا شك فيه", "تدرس في المدارس فقط", "تطبق بالبدن دون القلوب"], answer: 0 },
             { question: "مصدر العقيدة الإسلامية الصحيحة هو:", options: ["الكتاب والسنة بفهم سلف الأمة", "عقول الفلاسفة والمفكرين", "العادات والتقاليد والمجربات"], answer: 0 },
-            { question: "أول واجب على المكلف (المسلم البالغ العاقل) هو:", options: ["شهادة أن لا إله إلا الله وأن محمداً رسول الله", "الصلاة والصيام", "طلب العلم الدنيوي"], answer: 0 },
+            { question: "أول واجب على المكلف هو:", options: ["شهادة أن لا إله إلا الله وأن محمداً رسول الله", "الصلاة والصيام", "طلب العلم الدنيوي"], answer: 0 },
             { question: "معنى شهادة 'لا إله إلا الله' أي:", options: ["لا معبود بحق إلا الله", "لا خالق إلا الله", "لا موجود إلا الله"], answer: 0 },
             { question: "تتضمن شهادة لا إله إلا الله ركنين هما:", options: ["النفي (لا إله) والإثبات (إلا الله)", "القول والعمل", "الخوف والرجاء"], answer: 0 },
             { question: "معنى شهادة 'أن محمداً رسول الله' طاعته فيما أمر وتصديقه فيما أخبر و:", options: ["اجتناب ما نهى عنه وألا يعبد الله إلا بما شرع", "تعظيمه لدرجة رفعه فوق البشرية", "الصلاة عليه يوم الجمعة فقط"], answer: 0 },
@@ -172,7 +284,7 @@
             { question: "الملائكة مخلوقون من:", options: ["نور", "نار", "طين"], answer: 0 },
             { question: "الجن مخلوقون من:", options: ["مارج من نار", "نور خالص", "تراب الأرض"], answer: 0 },
             { question: "الملك الموكل بالوحي ونزوله على الأنبياء هو:", options: ["جبريل عليه السلام", "ميكائيل عليه السلام", "إسرافيل عليه السلام"], answer: 0 },
-            { question: "الملك الموكل بالقطر (المطر) والنبات وتدبيره هو:", options: ["ميكائيل عليه السلام", "مالك عليه السلام", "رضوان عليه السلام"], answer: 0 },
+            { question: "الملك الموكل بالقطر والنبات وتدبيره هو:", options: ["ميكائيل عليه السلام", "مالك عليه السلام", "رضوان عليه السلام"], answer: 0 },
             { question: "الملك الموكل بالنفخ في الصور لقيام الساعة هو:", options: ["إسرافيل عليه السلام", "ملك الموت", "جبريل عليه السلام"], answer: 0 },
             { question: "الكتاب السماوي الذي أنزل على موسى عليه السلام هو:", options: ["التوراة", "الإنجيل", "الزبور"], answer: 0 },
             { question: "الكتاب السماوي الذي أنزل على عيسى عليه السلام هو:", options: ["الإنجيل", "التوراة", "صحف نبي الله"], answer: 0 },
@@ -180,51 +292,116 @@
             { question: "الفرق بين النبي والرسول أن الرسول:", options: ["بعث بشرع جديد وقوم مخالفين والنبي يبعث لتقرير شرع من قبله", "يوحى إليه والنبي لا يوحى إليه", "أفضل من النبي دائماً في كل شيء"], answer: 0 },
             { question: "أولى العزم من الرسل عددهم خمسة وهم محمد وإبراهيم وموسى وعيسى و:", options: ["نوح عليه السلام", "آدم عليه السلام", "يوسف عليه السلام"], answer: 0 },
             { question: "الإيمان باليوم الآخر يتضمن الإيمان بفتنة القبر وهي سؤال الملكين:", options: ["منكر ونكير", "هاروت وماروت", "جبريل وميكائيل"], answer: 0 },
-            { question: "مراتب القدر أربعة مجتمعة في كلمة (علم كتابة مشيئة خلق) وأولها:", options: ["العلم الأزلي المحيط بكل شيء", "الكتابة في اللوح المحفوظ", "المشيئة النافذة"], answer: 0 },
+            { question: "مراتب القدر أربعة مجتمعة في كلمة علم كتابة مشيئة خلق وأولها:", options: ["العلم الأزلي المحيط بكل شيء", "الكتابة في اللوح المحفوظ", "المشيئة النافذة"], answer: 0 },
             { question: "مرتبة الكتابة تعني أن الله كتب مقادير كل شيء قبل خلق السماوات والأرض في:", options: ["اللوح المحفوظ", "صحف الملائكة", "كتب الأنبياء"], answer: 0 },
             { question: "الذنوب الكبائر هي كل ذنب رتب عليه الشرع حد في الدنيا أو:", options: ["وعيد بالنار أو اللعنة أو الغضب", "استغفار وتوبة فقط", "عقوبة مالية تعزيرية"], answer: 0 },
-            { question: "صاحب الكبيرة (كالقاتل والزاني) تحت مشيئة الله إن مات دون توبة، وفي الآخرة مآله:", options: ["لا يخلد في النار إن دخلها ويخرج بالتوحيد والشفاعة", "خالد في النار أبداً كالكافر", "يدخل الجنة مباشرة بدون حساب"], answer: 0 },
-            { question: "مرتكب الكبيرة في الدنيا يعتبر عند أهل السنة والجنس الفقهي المعتمد:", options: ["مؤمن ناقص الإيمان (أو مؤمن بإيمانه فاسق بكبيرته)", "كافر تماماً خارج من الملة", "منافق خالص النفاق"], answer: 0 },
+            { question: "صاحب الكبيرة تحت مشيئة الله إن مات دون توبة، وفي الآخرة مآله:", options: ["لا يخلد في النار إن دخلها ويخرج بالتوحيد والشفاعة", "خالد في النار أبداً كالكافر", "يدخل الجنة مباشرة بدون حساب"], answer: 0 },
+            { question: "مرتكب الكبيرة في الدنيا يعتبر عند أهل السنة والجنس الفقهي المعتمد:", options: ["مؤمن ناقص الإيمان", "كافر تماماً خارج من الملة", "منافق خالص النفاق"], answer: 0 },
             { question: "الخوارج هم طائفة كفروا مرتكب الكبيرة وقالوا بأنه في الآخرة:", options: ["خالد مخلد في نار جهنم", "يدخل الجنة مع الأنبياء", "في منزلة برزخية خاصة"], answer: 0 },
             { question: "المرجئة هم طائفة أخرجوا العمل عن مسمى الإيمان وقالوا:", options: ["لا يضر مع الإيمان ذنب كما لا ينفع مع الكفر طاعة", "العمل هو كل الإيمان", "مرتكب الكبيرة كافر في الدنيا"], answer: 0 },
-            { question: "أفضل الأمة بعد نبيها صلى الله عليه وسلم بالترتيب في الخلافة والفضل الفقهي الحصيف:", options: ["أبو بكر، ثم عمر Defense، ثم عثمان، ثم علي", "علي، ثم أبو بكر، ثم عمر، ثم عثمان", "أبو بكر، ثم علي، ثم عمر، ثم عثمان"], answer: 0 },
+            { question: "أفضل الأمة بعد نبيها صلى الله عليه وسلم بالترتيب في الخلافة والفضل الفقهي:", options: ["أبو بكر، ثم عمر، ثم عثمان، ثم علي", "علي، ثم أبو بكر، ثم عمر، ثم عثمان", "أبو بكر، ثم علي، ثم عمر، ثم عثمان"], answer: 0 },
             { question: "عقد الولاء والبراء في الإسلام يكون على أساس:", options: ["الدين والعقيدة والمحبة في الله والبغض فيه", "القبيلة والنسب والأرض", "المصالح المالية والسياسية المعاصرة"], answer: 0 },
             { question: "حب آل بيت النبي صلى الله عليه وسلم وتوليهم الأبرار الأتقياء هو:", options: ["واجب شرعي من أصول عقيدة أهل السنة دون غلو أو جفاء", "مستحب وخاص بأهل المذاهب المعينة", "غير لازم في العصر الحالي"], answer: 0 },
-            { question: "الواجب عند رؤية منكر من المعاصي والبدع تغييره بـ:", options: ["اليد، فإن لم يستطع فباللسان، فإن لم يستطع فبالقلب وهو أضعف الإيمان", "السكوت التام مطلقاً من باب الحكمة", "القتال الفوري دون مراعاة المفاسد"], answer: 0 },
+            { question: "الواجب عند رؤية منكر من المعاصي والبدع تغييره بـ:", options: ["اليد، فإن لم يستطع فباللسان, فإن لم يستطع فبالقلب", "السكوت التام مطلقاً من باب الحكمة", "القتال الفوري دون مراعاة المفاسد"], answer: 0 },
             { question: "أخوف ما خاف النبي صلى الله عليه وسلم على أمته الشرك الأصغر وفسره بـ:", options: ["الرياء", "السرقة", "الكذب"], answer: 0 },
             { question: "القول بأن الإنسان مجبر على أفعاله تماماً ولا مشيئة له بالكلية هو قول طائفة:", options: ["الجبرية", "القدرية", "المعتزلة"], answer: 0 },
-            { question: "القول بأن العبد يخلق فعل نفسه وأن الله لم يقدر المعاصي هو قول طائفة:", options: ["القدرية (نفاة القدر)", "الجبرية", "الأشاعرة"], answer: 0 },
+            { question: "القول بأن العبد يخلق فعل نفسه وأن الله لم يقدر المعاصي هو قول طائفة:", options: ["القدرية", "الجبرية", "الأشاعرة"], answer: 0 },
             { question: "السنة في لغة العقيدة تعني:", options: ["طريقة النبي صلى الله عليه وسلم وصحابته في الاعتقاد والعمل", "النافلة التي يثاب فاعلها ولا يعاقب تاركها", "الحديث النبوي الشريف فقط"], answer: 0 },
             { question: "الجماعة هم الذين اجتمعوا على الحق والاتباع وهم:", options: ["الصحابة والتابعون ومن سار على نهجهم إلى يوم الدين", "أكثر الناس عدداً في العالم", "الحركات والأحزاب المعاصرة"], answer: 0 },
             { question: "الواجب عند حدوث الفتن والنزاعات بين المسلمين هو الالتزام بـ:", options: ["الكتاب والسنة ولزوم جماعة المسلمين وإمامهم", "الاعتزال السلبي التام دون تمييز للحق", "التحيز للجهة الأكثر قوة ومالاً"], answer: 0 },
             { question: "الجنة درجات أعلى درجاتها الفردوس وسقفها هو:", options: ["عرش الرحمن", "السموات السبع", "سدرة المنتهى"], answer: 0 },
             { question: "النار دركات أسفلها وأشدها عذاباً مخصص لـ:", options: ["المنافقين نفاقاً اعتقادياً", "عصاة الموحدين", "اليهود والنصارى فقط"], answer: 0 },
             { question: "نعيم أهل الجنة في الجنة وبقاؤهم فيها يكون:", options: ["سرمدي أبدي لا ينقطع ولا ينتهي", "مؤقت لفترة زمنية طويلة جداً", "متجدد حسب الرغبة ثم يزول"], answer: 0 },
-            { question: "عياذاً بالله، الكفر والشرك والردة يحبطون العمل لقوله تعالى:", options: ["لئن أشركت ليحبطن عملك ولتكونن من الخاسرين", "إن الحسنات يذهبن السيئات", "فمن يعمل مثقال ذرة خيراً يره"], answer: 0 },
+            { question: "الكفر والشرك والردة يحبطون العمل لقوله تعالى:", options: ["لئن أشركت ليحبطن عملك ولتكونن من الخاسرين", "إن الحسنات يذهبن السيئات", "فمن يعمل مثقال ذرة خيراً يره"], answer: 0 },
             { question: "المراد بالتوحيد العلمي الخبري هو توحيد:", options: ["الأسماء والصفات والربوبية", "الألوهية والعبادة", "الحاكمية والتشريع فقط"], answer: 0 },
             { question: "المراد بالتوحيد الطلبي القصد هو توحيد:", options: ["الألوهية والعبادة وإفراد الله بالقصد والنية", "الربوبية والخلق", "الأسماء والصفات العليا"], answer: 0 },
             { question: "النبي صلى الله عليه وسلم حمى حمى التوحيد فنهى عن الغلو في مدحه كقوله:", options: ["لا تطروني كما أطرت النصارى ابن مريم", "صلوا كما رأيتموني أصلي", "تركت فيكم ما إن تمسكتم به لن تضلوا"], answer: 0 },
             { question: "زيارة القبور تكون مشروعة وسنة إذا كان القصد منها:", options: ["الاعتبار وتذكر الآخرة والدعاء للأموات المسلمين", "طلب الحاجات وتفريج الكربات من الميت", "التبرك بتراب القبر وبناء المساجد عليها"], answer: 0 },
-            { question: "الذين لا خوف عليهم ولا هم يحزنون هم أولياء الله وتفسيرهم الشرعي الصارم:", options: ["الذين آمنوا وكانوا يتقون", "الذين يملكون خوارق عادات دنيوية", "الذين اعتزلوا الناس تماماً وتفرغوا للتصوف"], answer: 0 },
+            { question: "الذين لا خوف عليهم ولا هم يحزنون هم أولياء الله وتفسيرهم الشرعي:", options: ["الذين آمنوا وكانوا يتقون", "الذين يملكون خوارق عادات دنيوية", "الذين اعتزلوا الناس تماماً وتفرغوا للتصوف"], answer: 0 },
             { question: "الإيمان بجميع الأنبياء شرط لصحة الإيمان فمن كفر بنبي واحد فقد:", options: ["كفر بجميع الأنبياء وخرج من الملة", "نقص إيمانه الواجب فقط", "وقع في معصية كبرى دون كفر"], answer: 0 },
             { question: "الركن السادس والأخير من أركان الإيمان الستة المعتمدة هو:", options: ["الإيمان بالقدر خيره وشره", "الإيمان باليوم الآخر", "الإيمان بالرسل والأنبياء"], answer: 0 },
             { question: "الشهادة التي تعصم دم الإنسان وماله في الدنيا هي قول:", options: ["أشهد أن لا إله إلا الله وأشهد أن محمداً رسول الله", "أشهد أن الجنة حق والنار حق", "أستغفر الله العظيم وأتوب إليه"], answer: 0 }
         ];
 
+        // مصفوفات العبارات التشجيعية والتنبيهية المطلوبة
+        const correctPhrases = [
+            "أحسنت، بارك الله فيك وعليك!", "مبدع ومتألق دائماً!", "إجابة سديدة، وفقك الله!", 
+            "ممتاز، زادك الله علماً وفهماً!", "أصبت الهدف بجدارة!", "رائع، ذكاء حاد وفهم ثاقب!", 
+            "درجة كاملة في الوعي، بوركت!", "إجابة نموذجية، أحسنت صنعاً!", "صحيح، فتح الله عليك فتوح العارفين!", 
+            "خطوة ممتازة نحو الصدارة!", "عبقري، إجابتك تثلج الصدر!", "ما شاء الله، إجابة متقنة وموفقة!"
+        ];
+
+        const wrongPhrases = [
+            "ركز في المرة القادمة، فالقادم أفضل!", "للأسف، إجابة غير دقيقة.. حاول مجدداً!", "بسيطة، تعوضها في السؤال التالي بإذن الله!", 
+            "تأمل في السؤال جيداً قبل الاختيار!", "لم يحالفك الحظ هذه المرة، ركز أكثر!", "خطأ بسيط، استعن بالله وتابع!", 
+            "لا بأس، من الخطأ نتعلم الصواب!", "فكر ملياً، أنت قادر على حلها!", "انتبه للتفاصيل في الأسئلة القادمة!", 
+            "معليش، خذ نفساً عميقاً وركز في القادم!"
+        ];
+
         let currentQuestionIndex = 0;
         let score = 0;
+        let audioCtx = null;
+
+        // دالة توليد المؤثرات الصوتية برمجياً عبر الجافاسكريبت لتعمل على كل الهواتف بثبات
+        function playSound(isCorrect) {
+            try {
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+                
+                // التأكد من تفعيل وضع الصوت إذا قيده الهاتف
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (isCorrect) {
+                    // نغمة مبهجة (صوت الإجابة الصحيحة)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // نغمة C5
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // نغمة E5
+                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.3);
+                } else {
+                    // نغمة تنبيهية منخفضة (صوت الإجابة الخاطئة)
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(220.00, audioCtx.currentTime); // نغمة A3
+                    osc.frequency.setValueAtTime(146.83, audioCtx.currentTime + 0.15); // نغمة D3
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.4);
+                }
+            } catch (e) {
+                console.log("Audio not supported or blocked by device config: ", e);
+            }
+        }
+
+        function initQuiz() {
+            loadQuestion();
+        }
 
         function loadQuestion() {
             const questionElement = document.getElementById('question');
             const optionsContainer = document.getElementById('options-container');
             const progressElement = document.getElementById('progress');
 
-            if (optionsContainer) optionsContainer.innerHTML = '';
+            if (!questionElement || !optionsContainer) {
+                setTimeout(loadQuestion, 50);
+                return;
+            }
+
+            optionsContainer.innerHTML = '';
 
             if (currentQuestionIndex < quizData.length) {
                 const currentQuiz = quizData[currentQuestionIndex];
-
-                if (questionElement) questionElement.innerText = currentQuiz.question;
+                questionElement.innerText = currentQuiz.question;
 
                 if (progressElement) {
                     const remaining = quizData.length - currentQuestionIndex;
@@ -235,19 +412,64 @@
                     const button = document.createElement('button');
                     button.innerText = option;
                     button.className = 'option-btn';
-                    button.onclick = () => checkAnswer(index);
-                    if (optionsContainer) optionsContainer.appendChild(button);
+                    button.onclick = () => checkAnswer(button, index);
+                    optionsContainer.appendChild(button);
                 });
             } else {
                 showResults();
             }
         }
 
-        function checkAnswer(selectedIndex) {
+        function checkAnswer(clickedButton, selectedIndex) {
             const currentQuiz = quizData[currentQuestionIndex];
-            if (selectedIndex === currentQuiz.answer) {
+            const buttons = document.querySelectorAll('.option-btn');
+            
+            // قفل جميع الأزرار لمنع التلاعب والضغط المكرر
+            buttons.forEach(btn => btn.disabled = true);
+
+            let isCorrect = (selectedIndex === currentQuiz.answer);
+
+            // تلوين الإجابات بذكاء حسب الصحة والخطأ
+            if (isCorrect) {
+                clickedButton.classList.add('correct');
                 score++;
+                playSound(true);
+                showFeedbackPopup(true);
+            } else {
+                clickedButton.classList.add('wrong');
+                // إضاءة الإجابة الصحيحة باللون الأخضر فوراً
+                buttons[currentQuiz.answer].classList.add('correct');
+                playSound(false);
+                showFeedbackPopup(false);
             }
+        }
+
+        // عرض النافذة المنبثقة الأنيقة بالعبارة العشوائية المناسبة
+        function showFeedbackPopup(isCorrect) {
+            const modal = document.getElementById('feedback-modal');
+            const title = document.getElementById('modal-title');
+            const text = document.getElementById('modal-text');
+
+            if (isCorrect) {
+                title.innerText = "إجابة صحيحة! 🎉";
+                title.className = "modal-title success";
+                const randomPhrase = correctPhrases[Math.floor(Math.random() * correctPhrases.length)];
+                text.innerText = randomPhrase;
+            } else {
+                title.innerText = "إجابة خاطئة 💔";
+                title.className = "modal-title fail";
+                const randomPhrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
+                text.innerText = randomPhrase;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModalAndContinue() {
+            const modal = document.getElementById('feedback-modal');
+            modal.classList.remove('active');
+            
+            // الانتقال للسؤال التالي بعد إغلاق النافذة
             currentQuestionIndex++;
             loadQuestion();
         }
@@ -257,22 +479,20 @@
             if (quizBox) {
                 quizBox.innerHTML = `
                     <div style="padding: 10px; text-align: center;">
-                        <h2>الحمد لله، تم إكمال الاختبار بنجاح</h2>
-                        <p style="font-size: 20px; margin: 20px 0;">درجتك النهائية هي: <strong>${score}</strong> من أصل <strong>${quizData.length}</strong></p>
-                        <button onclick="restartQuizFromScratch()" class="restart-btn">إعادة الاختبار من جديد</button>
+                        <h2 style="color: var(--primary-color); font-weight:700;">الحمد لله، تم إكمال الاختبار بنجاح</h2>
+                        <p style="font-size: 20px; margin: 25px 0; color: #5a6c7d;">درجتك النهائية الفخمة هي:<br><strong style="font-size:32px; color:var(--accent-color); font-weight:800;">${score}</strong> من أصل <strong style="font-size:24px;">${quizData.length}</strong></p>
+                        <button onclick="restartQuizFromScratch()" class="restart-btn">إعادة الاختبار الملكي</button>
                     </div>
                 `;
             }
         }
 
         function restartQuizFromScratch() {
-            currentQuestionIndex = 0;
-            score = 0;
-            loadQuestion();
+            window.location.reload(); // إعادة تدوير الصفحة لضمان تنظيف متكامل وعودة الذاكرة لنقطة الصفر
         }
 
-        // بدء التشغيل فوراً وبأمان عند قراءة السكريبت
-        loadQuestion();
+        document.addEventListener('DOMContentLoaded', initQuiz);
+        window.onload = initQuiz;
     </script>
 </body>
 </html>
