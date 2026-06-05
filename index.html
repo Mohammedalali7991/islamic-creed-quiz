@@ -2,61 +2,85 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aqeedah Quiz - اختبار العقيدة الفخم</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Aqeedah Quiz - الاختبار الملكي الفخم للعقيدة</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --accent-color: #d4af37; /* ذهبي فخم */
-            --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-            --correct-color: #2ecc71;
-            --wrong-color: #e74c3c;
+            --primary-dark: #1a252f;
+            --primary-light: #2c3e50;
+            --accent-gold: #d4af37;
+            --accent-gold-hover: #aa8c2c;
+            --bg-gradient: linear-gradient(135deg, #111720 0%, #1c2635 100%);
+            --card-bg: #ffffff;
+            --correct-green: #2ecc71;
+            --wrong-red: #e74c3c;
+            --text-dark: #2c3e50;
+            --text-muted: #7f8c8d;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background: var(--bg-gradient);
             margin: 0;
-            padding: 15px;
+            padding: 20px 15px;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             box-sizing: border-box;
+            color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        #quiz-container {
+            width: 100%;
+            max-width: 500px;
+            perspective: 1000px;
         }
 
         #quiz-box {
-            background-color: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 15px 35px rgba(44, 62, 80, 0.08);
-            padding: 35px 25px;
-            width: 100%;
-            max-width: 480px;
+            background: var(--card-bg);
+            border-radius: 28px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            padding: 40px 25px 30px 25px;
             text-align: center;
-            border-top: 6px solid var(--accent-color);
+            border: 1px solid rgba(212, 175, 55, 0.2);
             position: relative;
+            overflow: hidden;
+        }
+
+        #quiz-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, var(--accent-gold), #f3e5ab, var(--accent-gold));
         }
 
         h1 {
-            color: var(--primary-color);
-            font-size: 22px;
+            color: var(--primary-dark);
+            font-size: 24px;
             margin-top: 0;
             margin-bottom: 25px;
             font-weight: 800;
             letter-spacing: 0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         #question-container {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
             color: #ffffff;
-            padding: 22px;
-            border-radius: 18px;
-            font-size: 18px;
+            padding: 25px 20px;
+            border-radius: 20px;
+            font-size: 19px;
             font-weight: 600;
             line-height: 1.6;
             margin-bottom: 30px;
-            box-shadow: 0 8px 20px rgba(44, 62, 80, 0.15);
-            min-height: 50px;
+            box-shadow: 0 10px 25px rgba(26, 37, 47, 0.25);
+            border-right: 5px solid var(--accent-gold);
+            min-height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -65,49 +89,78 @@
         #options-container {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         .option-btn {
-            background-color: #ffffff;
-            color: #34495e;
-            border: 2px solid #eef2f5;
-            padding: 16px 20px;
-            border-radius: 14px;
-            font-size: 15px;
+            background-color: #f8fafc;
+            color: var(--text-dark);
+            border: 2px solid #e2e8f0;
+            padding: 18px 22px;
+            border-radius: 16px;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: right;
             font-weight: 600;
             width: 100%;
             box-sizing: border-box;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .option-btn:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
+            background-color: #f1f5f9;
+        }
+
+        .option-btn::after {
+            content: '✦';
+            color: var(--accent-gold);
+            font-size: 14px;
+            margin-right: 10px;
+            transition: all 0.2s;
         }
 
         .option-btn.correct {
-            background-color: rgba(46, 204, 113, 0.15) !important;
-            border-color: var(--correct-color) !important;
-            color: #1e7e34 !important;
+            background-color: rgba(46, 204, 113, 0.12) !important;
+            border-color: var(--correct-green) !important;
+            color: #1b7a43 !important;
             font-weight: 700;
+            box-shadow: 0 4px 12px rgba(46, 204, 113, 0.15);
+        }
+
+        .option-btn.correct::after {
+            content: '✓';
+            color: var(--correct-green);
+            font-size: 18px;
+            font-weight: bold;
         }
 
         .option-btn.wrong {
-            background-color: rgba(231, 76, 60, 0.15) !important;
-            border-color: var(--wrong-color) !important;
-            color: #bd2130 !important;
+            background-color: rgba(231, 76, 60, 0.12) !important;
+            border-color: var(--wrong-red) !important;
+            color: #b82e22 !important;
             font-weight: 700;
+            box-shadow: 0 4px 12px rgba(231, 76, 60, 0.15);
+        }
+
+        .option-btn.wrong::after {
+            content: '✕';
+            color: var(--wrong-red);
+            font-size: 18px;
+            font-weight: bold;
         }
 
         #progress {
             margin-top: 30px;
-            color: #95a5a6;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
         }
 
         .modal-overlay {
@@ -116,7 +169,8 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(17, 23, 32, 0.7);
+            backdrop-filter: blur(4px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -134,14 +188,15 @@
 
         .modal-content {
             background: #ffffff;
-            padding: 30px 25px;
-            border-radius: 20px;
+            padding: 35px 25px;
+            border-radius: 24px;
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
             text-align: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
             transform: translateY(-30px);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 5px solid var(--accent-gold);
         }
 
         .modal-overlay.active .modal-content {
@@ -149,62 +204,74 @@
         }
 
         .modal-title {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 14px;
         }
 
-        .modal-title.success { color: var(--correct-color); }
-        .modal-title.fail { color: var(--wrong-color); }
+        .modal-title.success { color: var(--correct-green); }
+        .modal-title.fail { color: var(--wrong-red); }
 
         .modal-text {
             font-size: 16px;
             color: #5a6c7d;
-            margin-bottom: 25px;
-            font-weight: 500;
-            line-height: 1.5;
+            margin-bottom: 30px;
+            font-weight: 600;
+            line-height: 1.6;
         }
 
         .modal-btn {
-            background-color: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
             color: white;
             border: none;
-            padding: 12px 35px;
-            border-radius: 12px;
-            font-size: 15px;
-            font-weight: 600;
+            padding: 15px 35px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(44, 62, 80, 0.2);
+            box-shadow: 0 6px 20px rgba(26, 37, 47, 0.3);
             width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .modal-btn:active {
+            transform: scale(0.98);
         }
 
         .restart-btn {
-            background-color: var(--accent-color);
-            color: var(--primary-color);
+            background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-hover) 100%);
+            color: var(--primary-dark);
             border: none;
-            padding: 14px 30px;
-            border-radius: 12px;
-            font-size: 16px;
+            padding: 16px 30px;
+            border-radius: 14px;
+            font-size: 17px;
             cursor: pointer;
             margin-top: 25px;
             font-weight: 700;
             width: 100%;
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .restart-btn:active {
+            transform: scale(0.98);
         }
     </style>
 </head>
 <body>
 
-    <div id="quiz-box">
-        <h1>أسئلة في العقيدة الإسلامية</h1>
-        
-        <div id="question-container">
-            <span id="question">جاري تحميل السؤال...</span>
+    <div id="quiz-container">
+        <div id="quiz-box">
+            <h1>أسئلة في العقيدة الإسلامية</h1>
+            
+            <div id="question-container">
+                <span id="question">جاري تحميل السؤال الملكي...</span>
+            </div>
+
+            <div id="options-container"></div>
+
+            <div id="progress">الأسئلة المتبقية: -- من أصل --</div>
         </div>
-
-        <div id="options-container"></div>
-
-        <div id="progress">الأسئلة المتبقية: -- من أصل --</div>
     </div>
 
     <div id="feedback-modal" class="modal-overlay">
@@ -216,12 +283,13 @@
     </div>
 
     <script>
+        // مصفوفة الـ 100 سؤال كاملة ومقفلة ومفحوصة بدقة بعد دمج السؤال المفقود
         const quizData = [
             { question: "ما هو أصل الأصول ولب دعوة المرسلين؟", options: ["توحيد الله العبادة", "الإيمان بالملائكة", "معرفة السيرة النبوية"], answer: 0 },
             { question: "منكر القدر يعتبر في العقيدة الإسلامية لغة وشرعاً:", options: ["كافر", "مؤمن", "مسلم"], answer: 0 },
-            { question: "ما معنى الإيمان بالملائكة؟", options: ["التصديق الجازم بوجودهم وأنهم عباد مكرمون", "رؤيتهم بالعين المجردة", "عبادتهم من دون الله"], answer: 0 },
+            { question: "ما معنى الإيمان بالملائكة？", options: ["التصديق الجازم بوجودهم وأنهم عباد مكرمون", "رؤيتهم بالعين المجردة", "عبادتهم من دون الله"], answer: 0 },
             { question: "المراد بالتوحيد في الإسلام هو:", options: ["إفراد الله بالربوبية والألوهية والأسماء والصفات", "الإيمان بوجود الله فقط", "القيام بالعبادات الظاهرة فقط"], answer: 0 },
-            { question: "ما حكم الإيمان بالكتب السماوية؟", options: ["واجب وهو ركن من أركان الإيمان", "مستحب", "جائز"], answer: 0 },
+            { question: "ما حكم الإيمان بالكتب السماوية？", options: ["واجب وهو ركن من أركان الإيمان", "مستحب", "جائز"], answer: 0 },
             { question: "أول الرسل هو نوح عليه السلام وآخرهم هو:", options: ["محمد صلى الله عليه وسلم", "عيسى عليه السلام", "موسى عليه السلام"], answer: 0 },
             { question: "ما معنى الإيمان باليوم الآخر؟", options: ["التصديق بكل ما أخبر به النبي مما يكون بعد الموت", "الخوف من الموت فقط", "معرفة علامات الساعة فقط"], answer: 0 },
             { question: "توحيد الربوبية يعني:", options: ["إفراد الله بأفعاله كالخلق والرزق والتدبير", "صرف العبادة لله وحده", "إثبات الأسماء والصفات لله"], answer: 0 },
@@ -229,7 +297,7 @@
             { question: "الشرك الأكبر يوجب:", options: ["الخلود في النار وحبوط جميع الأعمال", "عقوبة مؤقتة في النار", "نقصان الإيمان فقط"], answer: 0 },
             { question: "من أمثلة الشرك الأصغر:", options: ["الرياء اليسير والحلف بغير الله دون تعظيم كتعظيم الله", "دعاء غير الله", "الذبح لغير الله"], answer: 0 },
             { question: "النفاق الاعتقادي (الأكبر) يخرج صاحبه من الإسلام ويجعله في:", options: ["الدرك الأسفل من النار", "الجنة بعد الحساب", "منزلة بين المنزلتين"], answer: 0 },
-            { question: "ما هو حكم السحر في الإسلام؟", options: ["كفر مخرج من الملة", "معصية صغيرة", "مباح للضرورة"], answer: 0 },
+            { question: "ما هو حكم السحر في الإسلام？", options: ["كفر مخرج من الملة", "معصية صغيرة", "مباح للضرورة"], answer: 0 },
             { question: "الإيمان يزيد وينقص؛ يزيد بـ:", options: ["الطاعة وينقص بالمعصية", "القراءة وينقص بالكتابة", "المال وينقص بالفقر"], answer: 0 },
             { question: "الاستغاثة بغير الله فيما لا يقدر عليه إلا الله تعتبر:", options: ["شرك أكبر", "بدعة مستحبة", "جائزة شرعاً"], answer: 0 },
             { question: "ما هو التعريف الشرعي للإيمان؟", options: ["قول باللسان واعتقاد بالجنان وعمل بالأركان", "المعرفة بالقلب فقط", "النطق بالشهادتين فقط"], answer: 0 },
@@ -316,7 +384,8 @@
             { question: "الذين لا خوف عليهم ولا هم يحزنون هم أولياء الله وتفسيرهم الشرعي:", options: ["الذين آمنوا وكانوا يتقون", "الذين يملكون خوارق عادات دنيوية", "الذين اعتزلوا الناس تماماً وتفرغوا للتصوف"], answer: 0 },
             { question: "الإيمان بجميع الأنبياء شرط لصحة الإيمان فمن كفر بنبي واحد فقد:", options: ["كفر بجميع الأنبياء وخرج من الملة", "نقص إيمانه الواجب فقط", "وقع في معصية كبرى دون كفر"], answer: 0 },
             { question: "الركن السادس والأخير من أركان الإيمان الستة المعتمدة هو:", options: ["الإيمان بالقدر خيره وشره", "الإيمان باليوم الآخر", "الإيمان بالرسل والأنبياء"], answer: 0 },
-            { question: "الشهادة التي تعصم دم الإنسان وماله في الدنيا هي قول:", options: ["أشهد أن لا إله إلا الله وأشهد أن محمداً رسول الله", "أشهد أن الجنة حق والنار حق", "أستغفر الله العظيم وأتوب إليه"], answer: 0 }
+            { question: "الشهادة التي تعصم دم الإنسان وماله في الدنيا هي قول:", options: ["أشهد أن لا إله إلا الله وأشهد أن محمداً رسول الله", "أشهد أن الجنة حق والنار حق", "أستغفر الله العظيم وأتوب إليه"], answer: 0 },
+            { question: "العقيدة الإسلامية تؤخذ من مصدرين أساسيين هما:", options: ["الكتاب والسنة الصحيحة", "عقول الفلاسفة والمفكرين", "العادات والتقاليد القديمة"], answer: 0 }
         ];
 
         const correctPhrases = [
@@ -328,13 +397,15 @@
 
         const wrongPhrases = [
             "ركز في المرة القادمة، فالقادم أفضل!", "للأسف، إجابة غير دقيقة.. حاول مجدداً!", "بسيطة، تعوضها في السؤال التالي بإذن الله!", 
-            "تأمل في السؤال جيداً قبل الاختيار!", "لم يحالفك الحظ هذه المرة, ركز أكثر!", "خطأ بسيط، استعن بالله وتابع!", 
+            "تأمل في السؤال جيداً قبل الاختيار!", "لم يحالفك الحظ هذه المرة، ركز أكثر!", "خطأ بسيط، استعن بالله وتابع!", 
             "لا بأس، من الخطأ نتعلم الصواب!", "فكر ملياً، أنت قادر على حلها!", "انتبه للتفاصيل في الأسئلة القادمة!", 
             "معليش، خذ نفساً عميقاً وركز في القادم!"
         ];
 
         let currentQuestionIndex = 0;
         let score = 0;
+        let wrongQuestionsQueue = [];
+        let dynamicQuizList = [];
         let audioCtx = null;
 
         function playSound(isCorrect) {
@@ -355,7 +426,7 @@
                     osc.type = 'sine';
                     osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
                     osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); 
-                    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.3);
@@ -363,25 +434,38 @@
                     osc.type = 'sawtooth';
                     osc.frequency.setValueAtTime(220.00, audioCtx.currentTime); 
                     osc.frequency.setValueAtTime(146.83, audioCtx.currentTime + 0.15); 
-                    gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
                     gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
                     osc.start();
                     osc.stop(audioCtx.currentTime + 0.4);
                 }
             } catch (e) {
-                console.log("Audio logic blocked or un-supported: ", e);
+                console.log("Audio Error: ", e);
             }
         }
 
         function initQuiz() {
             const savedIndex = localStorage.getItem('aqeedah_quiz_index');
             const savedScore = localStorage.getItem('aqeedah_quiz_score');
+            const savedQueue = localStorage.getItem('aqeedah_quiz_queue');
+
+            dynamicQuizList = [...quizData];
 
             if (savedIndex !== null) {
                 currentQuestionIndex = parseInt(savedIndex, 10);
             }
             if (savedScore !== null) {
                 score = parseInt(savedScore, 10);
+            }
+            if (savedQueue !== null) {
+                wrongQuestionsQueue = JSON.parse(savedQueue);
+                wrongQuestionsQueue.forEach(item => {
+                    if (item.insertAt <= dynamicQuizList.length) {
+                        dynamicQuizList.splice(item.insertAt, 0, item.quizItem);
+                    } else {
+                        dynamicQuizList.push(item.quizItem);
+                    }
+                });
             }
 
             loadQuestion();
@@ -399,13 +483,13 @@
 
             optionsContainer.innerHTML = '';
 
-            if (currentQuestionIndex < quizData.length) {
-                const currentQuiz = quizData[currentQuestionIndex];
+            if (currentQuestionIndex < dynamicQuizList.length) {
+                const currentQuiz = dynamicQuizList[currentQuestionIndex];
                 questionElement.innerText = currentQuiz.question;
 
                 if (progressElement) {
-                    const remaining = quizData.length - currentQuestionIndex;
-                    progressElement.innerText = `الأسئلة المتبقية: ${remaining} من أصل ${quizData.length}`;
+                    const remaining = dynamicQuizList.length - currentQuestionIndex;
+                    progressElement.innerText = `الأسئلة المتبقية: ${remaining} من أصل ${dynamicQuizList.length}`;
                 }
 
                 currentQuiz.options.forEach((option, index) => {
@@ -421,7 +505,7 @@
         }
 
         function checkAnswer(clickedButton, selectedIndex) {
-            const currentQuiz = quizData[currentQuestionIndex];
+            const currentQuiz = dynamicQuizList[currentQuestionIndex];
             const buttons = document.querySelectorAll('.option-btn');
             
             buttons.forEach(btn => btn.disabled = true);
@@ -437,6 +521,20 @@
                 clickedButton.classList.add('wrong');
                 buttons[currentQuiz.answer].classList.add('correct');
                 playSound(false);
+                
+                const insertTargetIndex = currentQuestionIndex + 6;
+                
+                if (insertTargetIndex < dynamicQuizList.length) {
+                    dynamicQuizList.splice(insertTargetIndex, 0, currentQuiz);
+                } else {
+                    dynamicQuizList.push(currentQuiz);
+                }
+
+                wrongQuestionsQueue.push({
+                    insertAt: insertTargetIndex,
+                    quizItem: currentQuiz
+                });
+
                 showFeedbackPopup(false);
             }
         }
@@ -455,13 +553,12 @@
                 title.innerText = "إجابة خاطئة 💔";
                 title.className = "modal-title fail";
                 const randomPhrase = wrongPhrases[Math.floor(Math.random() * wrongPhrases.length)];
-                text.innerText = randomPhrase;
+                text.innerText = randomPhrase + "\n(سيعاد هذا السؤال عليك لاحقاً لتثبيت الحفظ)";
             }
 
             modal.classList.add('active');
         }
 
-        // التعديل الجوهري: يتم تخزين التقدم الفعلي هنا فقط لضمان سلامة البيانات من أي تنشيط مفاجئ للشاشة
         function closeModalAndContinue() {
             const modal = document.getElementById('feedback-modal');
             modal.classList.remove('active');
@@ -470,6 +567,7 @@
             
             localStorage.setItem('aqeedah_quiz_index', currentQuestionIndex);
             localStorage.setItem('aqeedah_quiz_score', score);
+            localStorage.setItem('aqeedah_quiz_queue', JSON.stringify(wrongQuestionsQueue));
             
             loadQuestion();
         }
@@ -479,9 +577,10 @@
             if (quizBox) {
                 quizBox.innerHTML = `
                     <div style="padding: 10px; text-align: center;">
-                        <h2 style="color: var(--primary-color); font-weight:700;">الحمد لله، تم إكمال الاختبار بنجاح</h2>
-                        <p style="font-size: 20px; margin: 25px 0; color: #5a6c7d;">درجتك النهائية الفخمة هي:<br><strong style="font-size:32px; color:var(--accent-color); font-weight:800;">${score}</strong> من أصل <strong style="font-size:24px;">${quizData.length}</strong></p>
-                        <button onclick="restartQuizFromScratch()" class="restart-btn">إعادة الاختبار الملكي</button>
+                        <h2 style="color: var(--primary-dark); font-weight:800; font-size:24px;">الحمد لله، تم إكمال الاختبار الملكي</h2>
+                        <p style="font-size: 20px; margin: 25px 0; color: var(--text-dark); font-weight:600;">درجتك النهائية الفخمة هي:<br><strong style="font-size:36px; color:var(--accent-gold); font-weight:800;">${score}</strong> من أصل <strong style="font-size:24px; color:var(--primary-dark);">${quizData.length}</strong></p>
+                        <p style="font-size:14px; color:var(--text-muted); font-weight:500; margin-top:-15px;">(النتيجة مبنية على الأسئلة الـ 100 الأساسية دون تكرار الأخطاء)</p>
+                        <button onclick="restartQuizFromScratch()" class="restart-btn">إعادة الاختبار الملكي من الصفر</button>
                     </div>
                 `;
             }
@@ -490,15 +589,19 @@
         function restartQuizFromScratch() {
             localStorage.removeItem('aqeedah_quiz_index');
             localStorage.removeItem('aqeedah_quiz_score');
+            localStorage.removeItem('aqeedah_quiz_queue');
+            
             currentQuestionIndex = 0;
             score = 0;
+            wrongQuestionsQueue = [];
+            dynamicQuizList = [...quizData];
             
             const quizBox = document.getElementById('quiz-box');
             if (quizBox) {
                 quizBox.innerHTML = `
                     <h1>أسئلة في العقيدة الإسلامية</h1>
                     <div id="question-container">
-                        <span id="question">جاري تحميل السؤال...</span>
+                        <span id="question">جاري تحميل السؤال الملكي...</span>
                     </div>
                     <div id="options-container"></div>
                     <div id="progress">الأسئلة المتبقية: -- من أصل --</div>
